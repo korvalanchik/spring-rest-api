@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title>[[#{note.list.headline}]]</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 class="flex-grow-1">[[#{note.list.headline}]]</h1>
+                <div>
+                    <a th:href="@{/notes/add}" class="btn btn-primary ms-2">[[#{note.list.createNew}]]</a>
+                </div>
+            </div>
+            <div th:if="${notes.empty}">[[#{note.list.empty}]]</div>
+            <div th:if="${!notes.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th scope="col">[[#{note.userid.label}]]</th>
+                            <th scope="col">[[#{note.title.label}]]</th>
+                            <th scope="col">[[#{note.content.label}]]</th>
+                            <th scope="col">[[#{note.user.label}]]</th>
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="note : ${notes}">
+                            <td>[[${note.userid}]]</td>
+                            <td>[[${note.title}]]</td>
+                            <td>[[${note.content}]]</td>
+                            <td>[[${note.user}]]</td>
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/notes/edit/{userid}(userid=${note.userid})}" class="btn btn-sm btn-secondary">[[#{note.list.edit}]]</a>
+                                    <form th:action="@{/notes/delete/{userid}(userid=${note.userid})}"
+                                            th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm d-inline">
+                                        <button type="submit" class="btn btn-sm btn-secondary">[[#{note.list.delete}]]</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
